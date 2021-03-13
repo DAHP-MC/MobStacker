@@ -11,7 +11,6 @@ public class OnSlimeSplit implements Listener{
 
     @EventHandler
     public void onSplit(SlimeSplitEvent e){
-
-
+        //TODO(Joe) Figure out what was intended here
     }
 }

@@ -44,11 +44,6 @@ public abstract class CommandExecutor {
         return console;
     }
 
-    public void setConsole() {
-        this.console = true;
-        this.player = false;
-    }
-
     public boolean isPlayer() {
         return player;
     }

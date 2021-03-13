@@ -30,16 +30,16 @@ public class KillAllCommand extends CommandExecutor {
         int mobKillerCounter = 0;
         for (World world : Bukkit.getServer().getWorlds()) {
             // Iterate through all entities in this world (if not disabled)
-            if(MobStacker.getInstance().getMobStackerConfig().disabledWorlds.contains(world)) continue;
+            if (MobStacker.getMobStackerConfig().disabledWorlds.contains(world)) continue;
             for (LivingEntity entity : world.getLivingEntities()) {
-                if(!(entity instanceof LivingEntity)) continue;
-                if(!entity.isValid()) continue;
+                if (entity == null) continue;
+                if (!entity.isValid()) continue;
                 if (entity.getType() == EntityType.PLAYER) continue;
-                if(entity.getType() == EntityType.PLAYER) continue;
-                if(entity.isLeashed()) continue;
-                if(entity instanceof Tameable) continue;
-                if(entity.getType() == EntityType.ARMOR_STAND) continue;
-                MobStacker.getInstance().getStackEntity().unstackAll(entity);
+                if (entity.getType() == EntityType.PLAYER) continue;
+                if (entity.isLeashed()) continue;
+                if (entity instanceof Tameable) continue;
+                if (entity.getType() == EntityType.ARMOR_STAND) continue;
+                MobStacker.getStackEntity().unstackAll(entity);
                 mobKillerCounter++;
             }
         }

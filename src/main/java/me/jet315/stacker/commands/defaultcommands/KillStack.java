@@ -18,11 +18,11 @@ public class KillStack extends CommandExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if(MobStacker.getInstance().getEntityStacker().getInstantKillPlayers().contains(sender.getName())){
-            MobStacker.getInstance().getEntityStacker().getInstantKillPlayers().remove(sender.getName());
+        if (MobStacker.getEntityStacker().getInstantKillPlayers().contains(sender.getName())) {
+            MobStacker.getEntityStacker().getInstantKillPlayers().remove(sender.getName());
             sender.sendMessage(ChatColor.GREEN + "KillStacks " + ChatColor.RED + "DISABLED");
-        }else{
-            MobStacker.getInstance().getEntityStacker().getInstantKillPlayers().add(sender.getName());
+        } else {
+            MobStacker.getEntityStacker().getInstantKillPlayers().add(sender.getName());
             sender.sendMessage(ChatColor.GREEN + "KillStacks " + ChatColor.GREEN + "ENABLED");
         }
     }

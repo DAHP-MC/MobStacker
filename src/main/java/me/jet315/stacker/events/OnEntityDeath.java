@@ -18,7 +18,7 @@ public class OnEntityDeath implements Listener{
 
     @EventHandler(priority = EventPriority.LOW)
     public void onEntityDeath(EntityDeathEvent e) {
-        if (!(e.getEntity() instanceof LivingEntity)) {
+        if (e.getEntity() == null) {
             return; // Not a living entity.
         }
 
@@ -30,23 +30,23 @@ public class OnEntityDeath implements Listener{
 
 
         if (entity.getType() != EntityType.PLAYER) {
-            if(MobStacker.getInstance().getEntityStacker().getEntitiesToMultiplyOnDeath().contains(entity) || (entity.getKiller() != null && MobStacker.getInstance().getEntityStacker().getInstantKillPlayers().contains(entity.getKiller().getName()))){
-                MobStacker.getInstance().getEntityStacker().getEntitiesToMultiplyOnDeath().remove(entity);
-                e.setDroppedExp(e.getDroppedExp() * multiplyDropsReturnExp(entity,e.getDrops()));
+            if (MobStacker.getEntityStacker().getEntitiesToMultiplyOnDeath().contains(entity) || (entity.getKiller() != null && MobStacker.getEntityStacker().getInstantKillPlayers().contains(entity.getKiller().getName()))) {
+                MobStacker.getEntityStacker().getEntitiesToMultiplyOnDeath().remove(entity);
+                e.setDroppedExp(e.getDroppedExp() * multiplyDropsReturnExp(entity, e.getDrops()));
                 return;
 
             }
-            MobStacker.getInstance().getStackEntity().attemptUnstackOne(entity);
+            MobStacker.getStackEntity().attemptUnstackOne(entity);
         }
 
-        if(MobStacker.getInstance().getMobStackerConfig().stackOnlySpawnerMobs){
-            MobStacker.getInstance().getEntityStacker().getValidEntity().remove(entity);
+        if (MobStacker.getMobStackerConfig().stackOnlySpawnerMobs) {
+            MobStacker.getEntityStacker().getValidEntity().remove(entity);
         }
     }
 
 
     public int multiplyDropsReturnExp(LivingEntity dead, List<ItemStack> drops){
-        int amountToMultiply = MobStacker.getInstance().getStackEntity().parseAmount(dead.getCustomName());
+        int amountToMultiply = MobStacker.getStackEntity().parseAmount(dead.getCustomName());
         if(amountToMultiply <=1) return 1;
         for(ItemStack i : drops){
             ItemStack item = new ItemStack(i);

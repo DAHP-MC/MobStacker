@@ -23,7 +23,7 @@ public class ReloadCommand extends CommandExecutor {
     public void execute(CommandSender sender, String[] args) {
         long startTime = System.currentTimeMillis();
         MobStacker.getInstance().reloadConfig();
-        MobStacker.getInstance().getMobStackerConfig().reloadConfig();
+        MobStacker.getMobStackerConfig().reloadConfig();
         long endtime = System.currentTimeMillis() - startTime;
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&7[&6MobStacker&7] &aConfiguration file successfully reloaded"));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&b&oReload took: &6" + endtime + "ms"));

@@ -34,26 +34,24 @@ public class EntityStackerManager {
     }
 
     private void startEntityClock(){
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(MobStacker.getInstance(), new Runnable() {
-            public void run() {
-                // Iterate through all worlds
-                for (World world : Bukkit.getServer().getWorlds()) {
-                    // Iterate through all entities in this world (if not disabled)
-                    if(MobStacker.getInstance().getMobStackerConfig().disabledWorlds.contains(world)) continue;
-                    for (LivingEntity entity : world.getLivingEntities()) {
-                        if(!checkEntity(entity)) continue;
-                        // Iterate through all entities in range
-                        for (Entity nearby : entity.getNearbyEntities(mobStackRadius, mobStackRadius, mobStackRadius)) {
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(MobStacker.getInstance(), () -> {
+            // Iterate through all worlds
+            for (World world : Bukkit.getServer().getWorlds()) {
+                // Iterate through all entities in this world (if not disabled)
+                if (MobStacker.getMobStackerConfig().disabledWorlds.contains(world)) continue;
+                for (LivingEntity entity : world.getLivingEntities()) {
+                    if (!checkEntity(entity)) continue;
+                    // Iterate through all entities in range
+                    for (Entity nearby : entity.getNearbyEntities(mobStackRadius, mobStackRadius, mobStackRadius)) {
 
-                            if(checkEntity(nearby)) {
-                                MobStacker.getInstance().getStackEntity().stack(entity, (LivingEntity) nearby);
-                            }
+                        if (checkEntity(nearby)) {
+                            MobStacker.getStackEntity().stack(entity, (LivingEntity) nearby);
                         }
                     }
                 }
-
             }
-        }, 20L, MobStacker.getInstance().getMobStackerConfig().updateTickDelay);
+
+        }, 20L, MobStacker.getMobStackerConfig().updateTickDelay);
 
     }
 
@@ -72,28 +70,28 @@ public class EntityStackerManager {
         if (entity.getType() == EntityType.PLAYER) {
             return false;
         }
-        if(!entitiesToStack.contains(entity.getType())){
+        if (!entitiesToStack.contains(entity.getType())) {
             return false;
         }
-        if(MobStacker.getInstance().getMobStackerConfig().worldguardEnabled) {
+        if (MobStacker.getMobStackerConfig().worldguardEnabled) {
             ApplicableRegionSet region = WGBukkit.getRegionManager(entity.getWorld()).getApplicableRegions(entity.getLocation());
-            for(ProtectedRegion r : region.getRegions()){
-                for(String s : MobStacker.getInstance().getMobStackerConfig().disabledRegions){
-                    if(r.getId().equalsIgnoreCase(s)){
+            for (ProtectedRegion r : region.getRegions()) {
+                for (String s : MobStacker.getMobStackerConfig().disabledRegions) {
+                    if (r.getId().equalsIgnoreCase(s)) {
                         return false;
                     }
                 }
             }
         }
-        if(((LivingEntity) entity).isLeashed() && !MobStacker.getInstance().getMobStackerConfig().stackLeachedMobs){
+        if (((LivingEntity) entity).isLeashed() && !MobStacker.getMobStackerConfig().stackLeachedMobs) {
             return false;
         }
-        if(entity instanceof Tameable){
-            if(!MobStacker.getInstance().getMobStackerConfig().stackTamedMobs){
+        if (entity instanceof Tameable) {
+            if (!MobStacker.getMobStackerConfig().stackTamedMobs) {
                 return false;
             }
         }
-        if(MobStacker.getInstance().getMobStackerConfig().stackOnlySpawnerMobs){
+        if (MobStacker.getMobStackerConfig().stackOnlySpawnerMobs) {
             if (!validEnity.contains(entity)) {
                 return false;
             }

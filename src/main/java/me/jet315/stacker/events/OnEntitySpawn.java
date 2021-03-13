@@ -15,14 +15,14 @@ public class OnEntitySpawn implements Listener {
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER) {
-            if (MobStacker.getInstance().getMobStackerConfig().mobsToStack.contains(e.getEntityType())) {
-                MobStacker.getInstance().getEntityStacker().getValidEntity().add(e.getEntity());
+            if (MobStacker.getMobStackerConfig().mobsToStack.contains(e.getEntityType())) {
+                MobStacker.getEntityStacker().getValidEntity().add(e.getEntity());
             }
         }
         if(e.getEntity().getType() == EntityType.SLIME){
             Slime slime = (Slime) e.getEntity();
             //valid display name
-            if(MobStacker.getInstance().getStackEntity().parseAmount(slime.getCustomName()) != -1){
+            if (MobStacker.getStackEntity().parseAmount(slime.getCustomName()) != -1) {
                 slime.setSize(4);
             }
         }

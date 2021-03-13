@@ -16,24 +16,33 @@ import java.io.File;
 /**
  * Created by Jet on 24/01/2018.
  */
-public class MobStacker extends JavaPlugin{
+public class MobStacker extends JavaPlugin {
 
-    private static MobStacker mobStacker;
-    private EntityStackerManager entityStacker;
-    private StackEntity stackEntity;
-    private Config config;
+    private static EntityStackerManager entityStacker;
+    private static StackEntity stackEntity;
+    private static Config config;
 
+    public static MobStacker getInstance() {
+        return getPlugin(MobStacker.class);
+    }
+
+    public static Config getMobStackerConfig() {
+        return config;
+    }
+
+    public static StackEntity getStackEntity() {
+        return stackEntity;
+    }
+
+    public static EntityStackerManager getEntityStacker() {
+        return entityStacker;
+    }
 
     @Override
     public void onEnable() {
-
-        mobStacker = this;
-
         createConfig();
         config = new Config(this.getConfig());
-
-
-        entityStacker = new EntityStackerManager(config.stackRadius,config.mobsToStack);
+        entityStacker = new EntityStackerManager(config.stackRadius, config.mobsToStack);
         stackEntity = new StackEntity(config);
 
         // Register listeners
@@ -44,24 +53,18 @@ public class MobStacker extends JavaPlugin{
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
         // WorldGuard may not be loaded
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+        if (!(plugin instanceof WorldGuardPlugin)) {
             config.worldguardEnabled = false;
         }
 
         //Register commands
         getCommand("mobstacker").setExecutor(new CommandHandler());
-
-    }
-
-
-    @Override
-    public void onDisable(){
-
     }
 
     private void createConfig() {
         try {
             if (!getDataFolder().exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 getDataFolder().mkdirs();
             }
             File file = new File(getDataFolder(), "config.yml");
@@ -73,25 +76,6 @@ public class MobStacker extends JavaPlugin{
             }
         } catch (Exception e) {
             e.printStackTrace();
-
-
         }
-    }
-
-    public static MobStacker getInstance() {
-        return mobStacker;
-    }
-
-
-    public Config getMobStackerConfig() {
-        return config;
-   }
-
-    public StackEntity getStackEntity() {
-        return stackEntity;
-    }
-
-    public EntityStackerManager getEntityStacker() {
-        return entityStacker;
     }
 }

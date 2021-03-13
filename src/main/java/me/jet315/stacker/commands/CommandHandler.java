@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class CommandHandler implements org.bukkit.command.CommandExecutor {
 
-    private final Map<String, CommandExecutor> commands = new HashMap<String, CommandExecutor>();
+    private final Map<String, CommandExecutor> commands = new HashMap<>();
 
 
     public CommandHandler() {

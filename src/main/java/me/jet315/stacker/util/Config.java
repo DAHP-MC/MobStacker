@@ -18,22 +18,34 @@ import java.util.Set;
  */
 public class Config {
 
-
-
-    /** The mob stack radius. Mobs of the same type within this radius will be stacked. */
+    /**
+     * The mob stack radius. Mobs of the same type within this radius will be stacked.
+     */
     public int stackRadius = 1;
-    /** The mob types that we want to stack. */
-    public Set<EntityType> mobsToStack = new HashSet<EntityType>();
-    /** The update delay for mob stacking, in ticks. */
+    /**
+     * The mob types that we want to stack.
+     */
+    public Set<EntityType> mobsToStack = new HashSet<>();
+    /**
+     * The update delay for mob stacking, in ticks.
+     */
     public int updateTickDelay = 20;
-    /**Stores the worlds where mobs should not stack */
+    /**
+     * Stores the worlds where mobs should not stack
+     */
     public Set<World> disabledWorlds = new HashSet<>();
-    /**Stores the regions where mobs should not be stacked */
+    /**
+     * Stores the regions where mobs should not be stacked
+     */
     public Set<String> disabledRegions = new HashSet<>();
     public boolean worldguardEnabled = false;
-    /**Stores boolean value of whether ONLY mob spawners should be stacked */
+    /**
+     * Stores boolean value of whether ONLY mob spawners should be stacked
+     */
     public boolean stackOnlySpawnerMobs = false;
-    /**Stores whether stacking of Tamed Mobs is enabled*/
+    /**
+     * Stores whether stacking of Tamed Mobs is enabled
+     */
     public boolean stackTamedMobs = false;
     /**Stores whether stacking of Leashed Mobs is enabled*/
     public boolean stackLeachedMobs = false;
@@ -52,16 +64,12 @@ public class Config {
      */
     public int indexLocation = 0;
 
-
     private final FileConfiguration configFile;
-
 
     public Config(FileConfiguration configFile) {
         this.configFile = configFile;
         this.reloadConfig();
     }
-
-
 
     public void reloadConfig() {
         boolean stackOnlySpawnerMobsBefore = stackOnlySpawnerMobs;
@@ -70,13 +78,12 @@ public class Config {
         updateTickDelay = configFile.getInt("UpdateTickDelay");
         maxAllowedInStack = configFile.getInt("MaxAllowedInStack");
         String stackFormat = configFile.getString("StackFormat");
-        stackMobsDispalyName = ChatColor.translateAlternateColorCodes('&',stackFormat);
-        for(String s : stackFormat.split(" ")){
-            if(s.contains("%number%")){
+        stackMobsDispalyName = ChatColor.translateAlternateColorCodes('&', stackFormat);
+        for (String s : stackFormat.split(" ")) {
+            if (s.contains("%number%")) {
                 break;
-            }else{
+            } else {
                 indexLocation++;
-                continue;
             }
         }
 
@@ -92,7 +99,6 @@ public class Config {
                 Bukkit.getPluginManager().registerEvents(new OnEntitySpawn(), MobStacker.getInstance());
                 Bukkit.getPluginManager().registerEvents(new OnEntityDespawn(), MobStacker.getInstance());
         }
-
     }
 
     /*
@@ -120,7 +126,6 @@ public class Config {
             if(world == null){
                 System.out.println("======= MOB STACKER =======");
                 System.out.println("INVALID WORLD NAME DETECTED: "+ worldName);
-                continue;
             }else{
                 this.disabledWorlds.add(world);
             }
@@ -134,9 +139,6 @@ public class Config {
         }
         worldguardEnabled = true;
 
-        for (String regionName : list) {
-            disabledRegions.add(regionName);
-
-        }
+        disabledRegions.addAll(list);
     }
 }
